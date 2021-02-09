@@ -104,4 +104,4 @@ const createObjects = () => {
 
 const templateObjects = new Array(10).fill(null).map(() => createObjects());
 
-console.log(templateObjects);
+//console.log(templateObjects);
