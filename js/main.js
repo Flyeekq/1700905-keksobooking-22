@@ -50,7 +50,7 @@ const getRandomFeatures = (features) => {
   newArray.sort(() => 0.5 - randomNumber);
   features.splice(randomNumber, randomNumber)
 
-  return newArray.join(', ');
+  return newArray;
 };
 
 function getRandomNumber(min, max) {
@@ -84,10 +84,10 @@ const createObjects = () => {
   let features = getRandomFeatures(FEATURES);
 
   return {
-    autor: {avatar: 'img/avatars/user0' + getRandomNumber(1, 8) + '.png'},
+    autor: {avatar: `img/avatars/user0${getRandomNumber(1, 8)}.png`},
     offer: {
       title: 'Объявление',
-      address: '' + location.x + ' ' + location.y,
+      address: `${location.x} ${location.y}`,
       price: getRandomNumber(0, 1000000),
       type: getRandomArrayElement(TYPES),
       rooms: getRandomNumber(0, 10),
@@ -96,7 +96,7 @@ const createObjects = () => {
       checkout: getRandomArrayElement(CHEKOUT),
       features: features,
       description: getRandomArrayElement(DESCRIPTIONS),
-      photos: getRandomArrayElement(PHOTOS)
+      photos: getRandomArrayElement(PHOTOS),
     },
     location: location,
   }
@@ -104,4 +104,4 @@ const createObjects = () => {
 
 const templateObjects = new Array(10).fill(null).map(() => createObjects());
 
-//  console.log(templateObjects);
+console.log(templateObjects);
