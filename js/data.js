@@ -1,3 +1,5 @@
+import {createObjects} from './util';
+
 const CHEKIN = [
   '12:00',
   '13:00',
@@ -40,4 +42,6 @@ const DESCRIPTIONS = [
   'просторный двор',
 ];
 
-export {CHEKIN, CHEKOUT, FEATURES, PHOTOS, TYPES, DESCRIPTIONS};
+const templateObjects = new Array(10).fill(null).map(() => createObjects());
+
+export {templateObjects};

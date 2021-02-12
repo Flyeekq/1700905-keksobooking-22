@@ -1,5 +1,3 @@
-import {createObjects} from './util';
-
-const templateObjects = new Array(10).fill(null).map(() => createObjects());
+import {templateObjects} from './data';
 
 //console.log(templateObjects);
