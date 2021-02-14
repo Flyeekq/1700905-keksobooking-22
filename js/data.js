@@ -1,4 +1,3 @@
-import {createObjects} from './util';
 
 const CHEKIN = [
   '12:00',
@@ -41,7 +40,3 @@ const DESCRIPTIONS = [
   'большая площадь территории',
   'просторный двор',
 ];
-
-const templateObjects = new Array(10).fill(null).map(() => createObjects());
-
-export {templateObjects};
