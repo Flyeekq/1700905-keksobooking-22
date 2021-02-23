@@ -1,4 +1,4 @@
-import {CHEKIN, CHEKOUT, FEATURES, PHOTOS, TYPES, DESCRIPTIONS} from './data';
+import {CHEKIN, CHEKOUT, FEATURES, PHOTOS, TYPES, DESCRIPTIONS} from './data.js';
 
 const getRandomArrayElement = (elements) => {
   return elements[getRandomNumber(0, elements.length - 1)];
@@ -50,8 +50,8 @@ const createObjects = () => {
       address: `${location.x} ${location.y}`,
       price: getRandomNumber(0, 1000000),
       type: getRandomArrayElement(TYPES),
-      rooms: getRandomNumber(0, 10),
-      guests: getRandomArrayElement(TYPES),
+      rooms: getRandomNumber(1, 10),
+      guests: getRandomNumber(1, 10),
       checkin: getRandomArrayElement(CHEKIN),
       checkout: getRandomArrayElement(CHEKOUT),
       features: features,

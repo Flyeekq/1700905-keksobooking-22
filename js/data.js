@@ -40,3 +40,5 @@ const DESCRIPTIONS = [
   'большая площадь территории',
   'просторный двор',
 ];
+
+export {CHEKIN, CHEKOUT, FEATURES, PHOTOS, TYPES, DESCRIPTIONS};
