@@ -1,5 +1,21 @@
 import {CHEKIN, CHEKOUT, FEATURES, PHOTOS, TYPES, DESCRIPTIONS} from './data.js';
 
+const locationCoords = {
+  MIN_X: 35.65000,
+  MAX_X: 35.70000,
+  MIN_Y: 139.70000,
+  MAX_Y: 139.80000,
+  PRECISION: 5,
+}
+
+const NumberLimits = {
+  ZERO: 0,
+  ONE: 1,
+  EIGHT: 8,
+  TEN: 10,
+  P_INFINITY: 1000000,
+}
+
 const getRandomArrayElement = (elements) => {
   return elements[getRandomNumber(0, elements.length - 1)];
 };
@@ -13,7 +29,7 @@ const getRandomFeatures = (features) => {
   return newArray;
 };
 
-function getRandomNumber(min, max) {
+const getRandomNumber = (min, max) => {
   min = Math.abs(min);
   max = Math.abs(max);
 
@@ -25,7 +41,7 @@ function getRandomNumber(min, max) {
   return Math.round(num)
 }
 
-function getRandomFloatNumber(min, max, precision) {
+const getRandomFloatNumber = (min, max, precision) => {
   min = Math.abs(min);
   max = Math.abs(max);
 
@@ -37,21 +53,23 @@ function getRandomFloatNumber(min, max, precision) {
   return num.toFixed(precision);
 }
 
-
 const createObjects = () => {
 
-  let location = {x: getRandomFloatNumber(35.65000, 35.70000, 5), y: getRandomFloatNumber(139.70000, 139.80000, 5)}
+  let location = {
+    x: getRandomFloatNumber(locationCoords.MIN_X, locationCoords.MAX_X, locationCoords.PRECISION),
+    y: getRandomFloatNumber(locationCoords.MIN_Y, locationCoords.MAX_Y, locationCoords.PRECISION),
+  }
   let features = getRandomFeatures(FEATURES);
 
   return {
-    autor: {avatar: `img/avatars/user0${getRandomNumber(1, 8)}.png`},
+    autor: {avatar: `img/avatars/user0${getRandomNumber(NumberLimits.ONE, NumberLimits.EIGHT)}.png`},
     offer: {
       title: 'Объявление',
       address: `${location.x} ${location.y}`,
-      price: getRandomNumber(0, 1000000),
+      price: getRandomNumber(NumberLimits.ZERO, NumberLimits.P_INFINITY),
       type: getRandomArrayElement(TYPES),
-      rooms: getRandomNumber(1, 10),
-      guests: getRandomNumber(1, 10),
+      rooms: getRandomNumber(NumberLimits.ONE, NumberLimits.TEN),
+      guests: getRandomNumber(NumberLimits.ONE, NumberLimits.TEN),
       checkin: getRandomArrayElement(CHEKIN),
       checkout: getRandomArrayElement(CHEKOUT),
       features: features,
@@ -62,4 +80,4 @@ const createObjects = () => {
   }
 }
 
-export {createObjects};
+export default createObjects;

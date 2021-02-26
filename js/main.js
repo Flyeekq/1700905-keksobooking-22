@@ -1,6 +1,8 @@
-import {createObjects} from './util.js';
-import {fillingAds} from './layout.js';
+import createObjects from './util.js';
+import renderCard from './layout.js';
 
-const templateObjects = new Array(10).fill(null).map(() => createObjects());
+const OBJECT_QUANTITY = 10;
 
-fillingAds(templateObjects);
+const templateObjects = new Array(OBJECT_QUANTITY).fill(null).map(() => createObjects());
+
+renderCard(templateObjects[0]);

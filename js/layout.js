@@ -1,84 +1,56 @@
-function fillingAds(templateObjects) {
-  const MAP = document.querySelector('#map-canvas');
+import {TYPE_RESOURCE} from './data.js';
 
-  for (const i in templateObjects) {
-    if (Object.hasOwnProperty.call(templateObjects, i)) {
-      const ad = templateObjects[i];
-      const element = ad.offer;
+const CLASS_TEXT = 'popup__feature--';
 
-      let cardTemplate = document.querySelector('#card').content;
-      let offer = cardTemplate.cloneNode(true);
-      let article = offer.children[0];
+const cardTemplate = document.querySelector('#card').content;
 
-      let type = article.querySelector('.popup__type');
-      let features = article.querySelector('.popup__features');
-      features.textContent = '';
+const addFeatures = (container, features) => {
+  container.textContent = '';
 
-      addingValues(ad, element, article)
-      addingHousingTypes(type, element.type);
-      addingFeatures(features, element.features);
+  features.forEach((feature) => {
+    const featureElement = document.createElement('li');
 
-      //For now I display one last declaration in the # map-canvas, according to the condition of the task, then I will remove the (if)
-      if (i == templateObjects.length-1) {
-        MAP.appendChild(offer);
-      }
+    featureElement.classList.add('popup__feature');
+    featureElement.classList.add(`${CLASS_TEXT}${feature}`);
+    featureElement.innerText = feature;
 
-    }
-  }
+    container.appendChild(featureElement);
+  });
 }
 
-function addingValues(ad, element, article) {
+const addValues = (element, autor, article) => {
 
-  let title = article.querySelector('.popup__title');
-  let address = article.querySelector('.popup__text--address');
-  let price = article.querySelector('.popup__text--price');
-  let guestRooms = article.querySelector('.popup__text--capacity');
-  let timeInOut = article.querySelector('.popup__text--time');
-  let description = article.querySelector('.popup__description');
-  let photos = article.querySelector('.popup__photos').querySelector('.popup__photo');
-  let avatar = article.querySelector('.popup__avatar');
+  const {title, address, price, rooms, guests, checkin, checkout, description, photos} = element;
 
-  title.innerText = element.title;
-  address.innerText = element.address;
-  price.innerText = `${element.price} ₽/ночь`;
-  guestRooms.innerText = `${element.rooms} комнаты для ${element.guests} гостей`;
-  timeInOut.innerText = `Заезд после ${element.checkin}, выезд до ${element.checkout}`;
-  description.innerText = element.description;
-  photos.src = element.photos;
-  avatar.src = ad.autor.avatar;
+  article.querySelector('.popup__title').innerText = title;
+  article.querySelector('.popup__text--address').innerText = address;
+  article.querySelector('.popup__text--price').innerText = `${price} ₽/ночь`;
+  article.querySelector('.popup__text--capacity').innerText = `${rooms} комнаты для ${guests} гостей`;
+  article.querySelector('.popup__text--time').innerText = `Заезд после ${checkin}, выезд до ${checkout}`;
+  article.querySelector('.popup__description').innerText = description;
+  article.querySelector('.popup__photos').querySelector('.popup__photo').src = photos;
+  article.querySelector('.popup__avatar').src = autor.avatar;
 }
 
-function addingHousingTypes(type, elementType) {
-  switch (elementType) {
-    case 'flat':
-      type.innerText = 'Квартира';
-      break;
-    case 'bungalow':
-      type.innerText = 'Бунгало';
-      break;
-    case 'house':
-      type.innerText = 'Дом';
-      break;
-    case 'palace':
-      type.innerText = 'Дворец';
-      break;
-    default:
-      type.innerText = '';
-  }
-}
+const getCardTemplate = (item) => {
+  const {offer, offer:{features, type}, autor} = item;
+  const cardTemplateElement = cardTemplate.cloneNode(true);
 
-function addingFeatures(features, elementFeatures) {
-  const CLASSTEXT = 'popup__feature--';
+  const article = cardTemplateElement.querySelector('.popup');
 
-  for (const featureElement of elementFeatures) {
-    let feature = document.createElement('li');
+  article.querySelector('.popup__type').innerText = TYPE_RESOURCE[type];
 
-    feature.classList.add('popup__feature');
-    feature.classList.add(`${CLASSTEXT}${featureElement}`);
-    feature.innerText = featureElement;
+  const featuresContainer = article.querySelector('.popup__features');
+  addFeatures(featuresContainer, features);
 
-    features.appendChild(feature);
-  }
-}
+  addValues(offer,autor, article);
 
-export {fillingAds};
+  return cardTemplateElement;
+};
+
+const renderCard = (item) => {
+  const cardItem = getCardTemplate(item);
+  document.querySelector('#map-canvas').appendChild(cardItem);
+};
+
+export default renderCard;
