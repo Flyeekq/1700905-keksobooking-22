@@ -26,11 +26,25 @@ const PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ];
 
+const TYPE = {
+  PALACE: 'palace',
+  FLAT: 'flat',
+  HOUSE: 'house',
+  BUNGALOW: 'bungalow',
+};
+
+const TYPE_RESOURCE = {
+  [TYPE.PALACE]: 'Дворец',
+  [TYPE.FLAT]:'Квартира',
+  [TYPE.HOUSE]:'Дом',
+  [TYPE.BUNGALOW]:'Бунгало',
+}
+
 const TYPES = [
-  'palace',
-  'flat',
-  'house',
-  'bungalow',
+  TYPE.PALACE,
+  TYPE.FLAT,
+  TYPE.HOUSE,
+  TYPE.BUNGALOW,
 ];
 
 const DESCRIPTIONS = [
@@ -40,3 +54,5 @@ const DESCRIPTIONS = [
   'большая площадь территории',
   'просторный двор',
 ];
+
+export {CHEKIN, CHEKOUT, FEATURES, PHOTOS, TYPE, TYPES, TYPE_RESOURCE, DESCRIPTIONS};
