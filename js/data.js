@@ -47,6 +47,13 @@ const TYPES = [
   TYPE.BUNGALOW,
 ];
 
+const PRICES_RESOURCE = {
+  [TYPE.PALACE]: 10000,
+  [TYPE.FLAT]: 1000,
+  [TYPE.HOUSE]: 5000,
+  [TYPE.BUNGALOW]: 0,
+}
+
 const DESCRIPTIONS = [
   'просторная светлое помещение',
   'не очень просторное и темное помещение',
@@ -55,4 +62,4 @@ const DESCRIPTIONS = [
   'просторный двор',
 ];
 
-export {CHEKIN, CHEKOUT, FEATURES, PHOTOS, TYPE, TYPES, TYPE_RESOURCE, DESCRIPTIONS};
+export {CHEKIN, CHEKOUT, FEATURES, PHOTOS, TYPE, TYPES, TYPE_RESOURCE, PRICES_RESOURCE, DESCRIPTIONS};
