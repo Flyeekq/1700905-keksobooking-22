@@ -1,30 +1,22 @@
 import {PRICES_RESOURCE} from './data.js';
 
-const evaluatePrice = (price) =>{
-  const {placeholder, value } = price;
-
-  if (+value < +placeholder || value == '') {
-    price.value = placeholder;
-  }
-}
-
-const typeChangeEvt = (type, price) => {type.addEventListener('change', (event) => {
+const initTypeChange = (type, price) => {type.addEventListener('change', (event) => {
   price.placeholder = PRICES_RESOURCE[`${event.target.value}`];
-  evaluatePrice(price);
+
+  const {placeholder} = price;
+  price.min = placeholder;
 })}
 
-const priceChangeEvt = (price) => {price.addEventListener('change', () => {
-  evaluatePrice(price);
-})}
-
-const addDefaultPrice = (type, price) => {
+const setDefaultPrice = (type, price) => {
   price.placeholder = PRICES_RESOURCE[`${type.value}`];
-  evaluatePrice(price);
+
+  const {placeholder} = price;
+  price.min = placeholder;
 }
 
-const timeChangeEvts = (timeIn, timeOut) => {
+const initTimeChange = (timeIn, timeOut) => {
   timeIn.addEventListener('change', () => {timeOut.value = timeIn.value;})
   timeOut.addEventListener('change', () => {timeIn.value = timeOut.value;})
 }
 
-export {typeChangeEvt, priceChangeEvt, addDefaultPrice, timeChangeEvts};
+export {initTypeChange, setDefaultPrice, initTimeChange};

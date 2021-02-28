@@ -1,6 +1,6 @@
 import createObjects from './util.js';
 import renderCard from './layout.js';
-import {typeChangeEvt, priceChangeEvt, addDefaultPrice, timeChangeEvts} from './form.js';
+import {initTypeChange, setDefaultPrice, initTimeChange} from './form.js';
 
 const OBJECT_QUANTITY = 10;
 
@@ -13,8 +13,7 @@ const templateObjects = new Array(OBJECT_QUANTITY).fill(null).map(() => createOb
 
 renderCard(templateObjects[0]);
 
-addDefaultPrice(type, price);
+setDefaultPrice(type, price);
 
-typeChangeEvt(type, price);
-priceChangeEvt(price);
-timeChangeEvts(timeIn, timeOut);
+initTypeChange(type, price);
+initTimeChange(timeIn, timeOut);
