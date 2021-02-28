@@ -1,22 +1,35 @@
-import {PRICES_RESOURCE} from './data.js';
+import { PRICES_RESOURCE } from './data.js';
 
-const initTypeChange = (type, price) => {type.addEventListener('change', (event) => {
-  price.placeholder = PRICES_RESOURCE[`${event.target.value}`];
+const type = document.querySelector('#type');
+const price = document.querySelector('#price');
+const timeIn = document.querySelector('#timein');
+const timeOut = document.querySelector('#timeout');
 
-  const {placeholder} = price;
-  price.min = placeholder;
-})}
-
-const setDefaultPrice = (type, price) => {
-  price.placeholder = PRICES_RESOURCE[`${type.value}`];
-
-  const {placeholder} = price;
-  price.min = placeholder;
+const updatePrice = (minValue) => {
+  price.placeholder = minValue
+  price.min = minValue;
 }
 
-const initTimeChange = (timeIn, timeOut) => {
-  timeIn.addEventListener('change', () => {timeOut.value = timeIn.value;})
-  timeOut.addEventListener('change', () => {timeIn.value = timeOut.value;})
+const initTypeChange = () => {
+  type.addEventListener('change', (event) => {
+    updatePrice(PRICES_RESOURCE[`${event.target.value}`]);
+  })
 }
 
-export {initTypeChange, setDefaultPrice, initTimeChange};
+const setDefaultPrice = () => {
+  updatePrice(PRICES_RESOURCE[`${type.value}`]);
+}
+
+
+const initTimeChange = () => {
+  timeIn.addEventListener('change', () => { timeOut.value = timeIn.value; })
+  timeOut.addEventListener('change', () => { timeIn.value = timeOut.value; })
+}
+
+const initForm = () => {
+  setDefaultPrice();
+  initTypeChange();
+  initTimeChange();
+}
+
+export { initForm };
