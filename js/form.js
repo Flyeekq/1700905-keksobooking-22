@@ -5,19 +5,20 @@ const price = document.querySelector('#price');
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
 
-const updatePrice = (minValue) => {
+const updatePrice = () => {
+  const minValue = PRICES_RESOURCE[`${type.value}`];
   price.placeholder = minValue
   price.min = minValue;
 }
 
 const initTypeChange = () => {
-  type.addEventListener('change', (event) => {
-    updatePrice(PRICES_RESOURCE[`${event.target.value}`]);
+  type.addEventListener('change', () => {
+    updatePrice();
   })
 }
 
 const setDefaultPrice = () => {
-  updatePrice(PRICES_RESOURCE[`${type.value}`]);
+  updatePrice();
 }
 
 
