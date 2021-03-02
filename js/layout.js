@@ -50,7 +50,8 @@ const getCardTemplate = (item) => {
 
 const renderCard = (item) => {
   const cardItem = getCardTemplate(item);
-  document.querySelector('#map-canvas').appendChild(cardItem);
+  return cardItem;
+  //document.querySelector('#map-canvas').appendChild(cardItem);
 };
 
 export default renderCard;
