@@ -8,9 +8,9 @@ export const setPageActivity = (status) => {
   {
     adForm.classList.remove('ad-form--disabled');
 
-    for (let element of adFormChildren) {
-      element.setAttribute('disabled', status);
-    }
+    // for (let element of adFormChildren) {
+    //   element.setAttribute('disabled', false);
+    // }
   }
 
 }
