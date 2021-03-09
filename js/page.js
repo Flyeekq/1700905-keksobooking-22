@@ -1,5 +1,5 @@
 const adForm = document.querySelector('.ad-form');
-const adFormChildren = adForm.children;
+// const adFormChildren = adForm.children;
 
 export const setPageActivity = (status) => {
   if (!status)
@@ -8,9 +8,9 @@ export const setPageActivity = (status) => {
   {
     adForm.classList.remove('ad-form--disabled');
 
-    for (let element of adFormChildren) {
-      element.setAttribute('disabled', status);
-    }
+    // for (let element of adFormChildren) {
+    //   element.setAttribute('disabled', status);
+    // }
   }
 
 }

@@ -62,4 +62,23 @@ const DESCRIPTIONS = [
   'просторный двор',
 ];
 
-export {CHEKIN, CHEKOUT, FEATURES, PHOTOS, TYPE, TYPES, TYPE_RESOURCE, PRICES_RESOURCE, DESCRIPTIONS};
+const GUESTS = {
+  ANY: 'any',
+  ZERO: '0',
+  ONE: '1',
+  TWO: '2',
+  THREE: '3'}
+
+const GUESTS_RESOURCE = {
+  [GUESTS.ANY]: ['any'],
+  [GUESTS.ZERO]: ['0'],
+  [GUESTS.ONE]: ['1'],
+  [GUESTS.TWO]: ['1', '2'],
+  [GUESTS.THREE]: ['1', '2', '3']}
+
+
+
+
+
+
+export {CHEKIN, CHEKOUT, FEATURES, PHOTOS, TYPE, TYPES, TYPE_RESOURCE, PRICES_RESOURCE, GUESTS_RESOURCE, DESCRIPTIONS};
