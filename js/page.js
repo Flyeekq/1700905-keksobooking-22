@@ -10,6 +10,7 @@ export const setPageActivity = (status) => {
 
     // for (let element of adFormChildren) {
     //   element.setAttribute('disabled', status);
+    //   element.setAttribute('disabled', false);
     // }
   }
 
