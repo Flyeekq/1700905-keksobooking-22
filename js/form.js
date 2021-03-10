@@ -12,6 +12,7 @@ const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
 const capacity = document.querySelector('#capacity');
 const rooms = document.querySelector('#room_number');
+const address = document.querySelector('#address');
 
 const updatePrice = () => {
   const minValue = PRICES_RESOURCE[`${type.value}`];
@@ -19,23 +20,28 @@ const updatePrice = () => {
   price.min = minValue;
 }
 
+const updateAddress = (mainPinMarker) =>{
+  address.value = `${mainPinMarker._latlng.lat} ${mainPinMarker._latlng.lng}`;
+}
+
 const updateCapacity = () => {
   let capacityChildren = capacity.children;
 
   for (let places of capacityChildren) {
-
     const roomsNumber = GUESTS_RESOURCE[`${rooms.value}`];
 
-    if (roomsNumber.includes(places.value) ) {
-      places.hidden = false;
-      places.setAttribute('selected', 'selected');
-    }
-    else {
-      places.hidden = true;
-      places.removeAttribute('selected', 'selected');
+    places.removeAttribute('selected', 'selected');
+
+    if (roomsNumber.includes(places.value)) {
+      places.disabled = false;
+      if (places.value == rooms.value) {
+        places.setAttribute('selected', 'selected');
+      }
+    } else {
+      places.disabled = true;
     }
   }
-}
+};
 
 const initCapacityChange = () => {
   rooms.addEventListener('change', () => {
@@ -71,4 +77,4 @@ const initForm = () => {
   initMap(templateObjects);
 }
 
-export { initForm };
+export { initForm , updateAddress };
