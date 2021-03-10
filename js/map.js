@@ -60,7 +60,9 @@ const addMarker = (lat, lng, onMoveendHandler, icon, map) => {
   if(onMoveendHandler){
     marker.on('moveend', (evt) => {
       let markerLatLng = evt.target.getLatLng();
-      address.value = `${markerLatLng.lat} ${markerLatLng.lng}`;
+      const {lat, lng} = markerLatLng;
+
+      updateAddress(lat, lng);
     });
   }
   marker.addTo(map);
