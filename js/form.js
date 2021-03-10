@@ -10,11 +10,17 @@ const type = document.querySelector('#type');
 const price = document.querySelector('#price');
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
+const address = document.querySelector('#address');
+
 
 const updatePrice = () => {
   const minValue = PRICES_RESOURCE[`${type.value}`];
   price.placeholder = minValue
   price.min = minValue;
+}
+
+const updateAddress = (mainPinMarker) =>{
+  address.value = `${mainPinMarker._latlng.lat} ${mainPinMarker._latlng.lng}`;
 }
 
 const initTypeChange = () => {
@@ -39,4 +45,4 @@ const initForm = () => {
   initMap(templateObjects);
 }
 
-export { initForm };
+export { initForm, updateAddress };

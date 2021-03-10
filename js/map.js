@@ -1,25 +1,17 @@
 import renderCard from './layout.js';
+import {updateAddress} from './form.js';
 
-const address = document.querySelector('#address');
 
 const renderMap = (templateObjects) => {
   const map = createMap();
 
-  const mainPinIcon = L.icon({
-    iconUrl: '../img/main-pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
-  });
+  const mainPinIcon = createIcon('../img/main-pin.svg');
 
   let mainPinMarker = addMarker(35.672855, 139.817413, true, mainPinIcon, map);
-  updateAddress(address, mainPinMarker);
+  updateAddress(mainPinMarker);
 
   templateObjects.forEach((card) => {
-    const simplePinIcon = L.icon({
-      iconUrl: '../img/pin.svg',
-      iconSize: [52, 52],
-      iconAnchor: [26, 52],
-    });
+    const simplePinIcon = createIcon('../img/pin.svg');
 
     let simplePinMarker = addMarker(card.location.x, card.location.y, false, simplePinIcon, map);
 
@@ -75,8 +67,12 @@ const addMarker = (lat, lng, onMoveendHandler, icon, map) => {
   return marker;
 }
 
-const updateAddress = (address, mainPinMarker) =>{
-  address.value = `${mainPinMarker._latlng.lat} ${mainPinMarker._latlng.lng}`;
+const createIcon = (iconUrl) => {
+  return L.icon({
+    iconUrl: iconUrl,
+    iconSize: [52, 52],
+    iconAnchor: [26, 52],
+  })
 }
 
 const initMap = (templateObjects) => {
