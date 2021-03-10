@@ -20,8 +20,8 @@ const updatePrice = () => {
   price.min = minValue;
 }
 
-const updateAddress = (mainPinMarker) =>{
-  address.value = `${mainPinMarker._latlng.lat} ${mainPinMarker._latlng.lng}`;
+const updateAddress = (lat, lng) =>{
+  address.value = `${lat} ${lng}`;
 }
 
 const updateCapacity = () => {

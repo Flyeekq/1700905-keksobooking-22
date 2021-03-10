@@ -7,7 +7,9 @@ const renderMap = (templateObjects) => {
   const mainPinIcon = createIcon('../img/main-pin.svg');
 
   let mainPinMarker = addMarker(35.672855, 139.817413, true, mainPinIcon, map);
-  updateAddress(mainPinMarker);
+  const {lat, lng} = mainPinMarker._latlng;
+
+  updateAddress(lat, lng);
 
   templateObjects.forEach((card) => {
     const simplePinIcon = createIcon('../img/pin.svg');
