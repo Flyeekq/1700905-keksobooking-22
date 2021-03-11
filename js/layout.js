@@ -18,7 +18,7 @@ const addFeatures = (container, features) => {
   });
 }
 
-const addValues = (element, autor, article) => {
+const addValues = (element, author, article) => {
 
   const {title, address, price, rooms, guests, checkin, checkout, description, photos} = element;
 
@@ -29,11 +29,11 @@ const addValues = (element, autor, article) => {
   article.querySelector('.popup__text--time').innerText = `Заезд после ${checkin}, выезд до ${checkout}`;
   article.querySelector('.popup__description').innerText = description;
   article.querySelector('.popup__photos').querySelector('.popup__photo').src = photos;
-  article.querySelector('.popup__avatar').src = autor.avatar;
+  article.querySelector('.popup__avatar').src = author.avatar;
 }
 
 const getCardTemplate = (item) => {
-  const {offer, offer:{features, type}, autor} = item;
+  const {offer, offer:{features, type}, author} = item;
   const cardTemplateElement = cardTemplate.cloneNode(true);
 
   const article = cardTemplateElement.querySelector('.popup');
@@ -43,7 +43,7 @@ const getCardTemplate = (item) => {
   const featuresContainer = article.querySelector('.popup__features');
   addFeatures(featuresContainer, features);
 
-  addValues(offer,autor, article);
+  addValues(offer, author, article);
 
   return cardTemplateElement;
 };

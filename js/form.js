@@ -1,10 +1,18 @@
 import { PRICES_RESOURCE, GUESTS_RESOURCE} from './data.js';
-import {initMap} from './map.js';
-import createObjects from './util.js';
+// import {initMap} from './map.js';
+// import createObjects from './util.js';
+// import {createFetch} from './fetch.js'
 
-const OBJECT_QUANTITY = 10;
+// const OBJECT_QUANTITY = 10;
+// const templateObjects = new Array(OBJECT_QUANTITY).fill(null).map(() => createObjects());
 
-const templateObjects = new Array(OBJECT_QUANTITY).fill(null).map(() => createObjects());
+// const fetchAnimals = createFetch(
+//   (animals) => {
+//     initMap(animals);
+//   },
+//   (err) => {
+//       console.log(err);
+//   });
 
 const type = document.querySelector('#type');
 const price = document.querySelector('#price');
@@ -74,7 +82,8 @@ const initForm = () => {
   initTypeChange();
   initTimeChange();
   initCapacityChange();
-  initMap(templateObjects);
+  // initMap(a);
+  // fetchAnimals();
 }
 
 export { initForm , updateAddress };

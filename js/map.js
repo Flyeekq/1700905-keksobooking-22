@@ -1,7 +1,7 @@
 import renderCard from './layout.js';
 import {updateAddress} from './form.js';
 
-const renderMap = (templateObjects) => {
+const renderMap = (ads) => {
   const map = createMap();
 
   const mainPinIcon = createIcon('../img/main-pin.svg');
@@ -11,10 +11,10 @@ const renderMap = (templateObjects) => {
 
   updateAddress(lat, lng);
 
-  templateObjects.forEach((card) => {
+  ads.forEach((card) => {
     const simplePinIcon = createIcon('../img/pin.svg');
 
-    let simplePinMarker = addMarker(card.location.x, card.location.y, false, simplePinIcon, map);
+    let simplePinMarker = addMarker(card.location.lat, card.location.lng, false, simplePinIcon, map);
 
     simplePinMarker.bindPopup(
       renderCard(card),
@@ -60,7 +60,9 @@ const addMarker = (lat, lng, onMoveendHandler, icon, map) => {
   if(onMoveendHandler){
     marker.on('moveend', (evt) => {
       let markerLatLng = evt.target.getLatLng();
-      address.value = `${markerLatLng.lat} ${markerLatLng.lng}`;
+      const {lat, lng} = markerLatLng;
+
+      updateAddress(lat, lng);
     });
   }
   marker.addTo(map);
@@ -76,8 +78,8 @@ const createIcon = (iconUrl) => {
   })
 }
 
-const initMap = (templateObjects) => {
-  renderMap(templateObjects);
+const initMap = (ads) => {
+  renderMap(ads);
 }
 
 export { initMap };
