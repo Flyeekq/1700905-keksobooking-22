@@ -9,21 +9,18 @@ let msgSuc = null;
 let msgErr = null;
 
 const showSuccess = () => {
-  const successMessageTemplateElement = successMessageTemplate.cloneNode(true);
+  msgSuc = successMessageTemplate.querySelector('.success').cloneNode(true);
 
-  main.prepend(successMessageTemplateElement);
-  msgSuc = document.querySelector('.success');
+  main.prepend(msgSuc);
 
   addDocumentEvents();
 };
 
 const showError = (err) => {
-  const errorMessageTemplateElement = errorMessageTemplate.cloneNode(true);
+  msgErr = errorMessageTemplate.querySelector('.error').cloneNode(true);
+  msgErr.querySelector('.error__message').innerText = err;
 
-  errorMessageTemplateElement.querySelector('.error__message').innerText = err;
-
-  main.prepend(errorMessageTemplateElement);
-  msgErr = document.querySelector('.error');
+  main.prepend(msgErr);
 
   addDocumentEvents();
 };
@@ -33,8 +30,8 @@ const onDocumentClick = () => {
 };
 
 const onDocumentKeyDown = () => {
-  document.addEventListener('keydown', (event) => {
-    if (event.keyCode == 27) {
+  document.addEventListener('keydown', (evt) => {
+    if (evt.keyCode == 27) {
       hideNotification();
     }
   });

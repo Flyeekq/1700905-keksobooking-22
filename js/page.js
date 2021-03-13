@@ -1,5 +1,4 @@
 const adForm = document.querySelector('.ad-form');
-// const adFormChildren = adForm.children;
 
 export const setPageActivity = (status) => {
   if (!status) {

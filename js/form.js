@@ -2,6 +2,11 @@ import { PRICES_RESOURCE, GUESTS_RESOURCE } from './data.js';
 import { uploadItems } from './fetch.js';
 import { showSuccess, showError } from './notification.js';
 
+const MainCoord = {
+  LAT: 35.672855,
+  LNG: 139.817413,
+};
+
 const type = document.querySelector('#type');
 const price = document.querySelector('#price');
 const timeIn = document.querySelector('#timein');
@@ -54,8 +59,8 @@ const initTypeChange = () => {
 };
 
 const onFormSumbit = () => {
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
 
     // uploadItems(
     //   () => {
@@ -67,13 +72,13 @@ const onFormSumbit = () => {
     //   new FormData(event.target)
     // );
 
-    uploadItems(showSuccess, showError, new FormData(event.target));
+    uploadItems(showSuccess, showError, new FormData(evt.target));
   });
 };
 
 const setDefaultFormValues = () => {
   form.reset();
-  updateAddress(35.672855, 139.817413);
+  updateAddress(MainCoord.LAT, MainCoord.LNG);
 };
 
 const setDefaultPrice = () => {
@@ -85,7 +90,9 @@ const setDefaultCapacity = () => {
 };
 
 const onResetButtonClick = () => {
-  resetButton.addEventListener('click', () => {
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+
     setDefaultFormValues();
   });
 };
