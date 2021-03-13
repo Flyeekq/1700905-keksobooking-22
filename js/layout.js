@@ -1,4 +1,4 @@
-import {TYPE_RESOURCE} from './data.js';
+import { TYPE_RESOURCE } from './data.js';
 
 const CLASS_TEXT = 'popup__feature--';
 
@@ -16,24 +16,43 @@ const addFeatures = (container, features) => {
 
     container.appendChild(featureElement);
   });
-}
+};
 
 const addValues = (element, author, article) => {
-
-  const {title, address, price, rooms, guests, checkin, checkout, description, photos} = element;
+  const {
+    title,
+    address,
+    price,
+    rooms,
+    guests,
+    checkin,
+    checkout,
+    description,
+    photos,
+  } = element;
 
   article.querySelector('.popup__title').innerText = title;
   article.querySelector('.popup__text--address').innerText = address;
   article.querySelector('.popup__text--price').innerText = `${price} ₽/ночь`;
-  article.querySelector('.popup__text--capacity').innerText = `${rooms} комнаты для ${guests} гостей`;
-  article.querySelector('.popup__text--time').innerText = `Заезд после ${checkin}, выезд до ${checkout}`;
+  article.querySelector(
+    '.popup__text--capacity'
+  ).innerText = `${rooms} комнаты для ${guests} гостей`;
+  article.querySelector(
+    '.popup__text--time'
+  ).innerText = `Заезд после ${checkin}, выезд до ${checkout}`;
   article.querySelector('.popup__description').innerText = description;
-  article.querySelector('.popup__photos').querySelector('.popup__photo').src = photos;
+  article
+    .querySelector('.popup__photos')
+    .querySelector('.popup__photo').src = photos;
   article.querySelector('.popup__avatar').src = author.avatar;
-}
+};
 
 const getCardTemplate = (item) => {
-  const {offer, offer:{features, type}, author} = item;
+  const {
+    offer,
+    offer: { features, type },
+    author,
+  } = item;
   const cardTemplateElement = cardTemplate.cloneNode(true);
 
   const article = cardTemplateElement.querySelector('.popup');

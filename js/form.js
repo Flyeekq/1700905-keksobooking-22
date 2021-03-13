@@ -1,7 +1,7 @@
 import { PRICES_RESOURCE, GUESTS_RESOURCE } from './data.js';
 import { uploadItems } from './fetch.js';
+import { showSuccess, showError } from './notification.js';
 
-const main = document.querySelector('main');
 const type = document.querySelector('#type');
 const price = document.querySelector('#price');
 const timeIn = document.querySelector('#timein');
@@ -11,12 +11,6 @@ const rooms = document.querySelector('#room_number');
 const address = document.querySelector('#address');
 const form = document.querySelector('.ad-form');
 const resetButton = document.querySelector('.ad-form__reset');
-
-
-let successMessageTemplate = document.querySelector('#success').content;
-let errorMessageTemplate = document.querySelector('#error').content;
-let errorMessageButton = document.querySelector('.error__button');
-
 
 const updatePrice = () => {
   const minValue = PRICES_RESOURCE[`${type.value}`];
@@ -63,60 +57,24 @@ const onFormSumbit = () => {
   form.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    uploadItems(
-      () => {
-        const successMessageTemplateElement = successMessageTemplate.cloneNode(true);
+    // uploadItems(
+    //   () => {
+    //     showSuccess();
+    //   },
+    //   (err) => {
+    //     showError(err);
+    //   },
+    //   new FormData(event.target)
+    // );
 
-        main.prepend(successMessageTemplateElement);
-
-        initForm();
-      },
-      (err) => {
-        const errorMessageTemplateElement = errorMessageTemplate.cloneNode(true);
-        errorMessageTemplateElement.querySelector('.error__message').innerText = err;
-
-        main.prepend(errorMessageTemplateElement);
-      },
-      new FormData(event.target),
-    );
+    uploadItems(showSuccess, showError, new FormData(event.target));
   });
 };
 
-const onResetButtonClick = () => {
-  resetButton.addEventListener('click', () => {
-    initForm();
-  });
+const setDefaultFormValues = () => {
+  form.reset();
+  updateAddress(35.672855, 139.817413);
 };
-
-const onErrorButtonClick = () => {
-  errorMessageButton.addEventListener('click', () => {
-    initForm();
-  });
-};
-
-const onDocumentClick = () => {
-
-  document.addEventListener('click', (event) => {hideSuccessMsg(event.target);});
-};
-
-const onDocumentKeyDown = () => {
-  document.addEventListener('keydown', (event) =>
-  {
-    if (event.keyCode == 27)
-    {
-      hideSuccessMsg(main);
-    }
-  });
-}
-
-const hideSuccessMsg = (target) => {
-  const msgSuccess = document.querySelector('.success');
-
-  if (target.contains(msgSuccess) && msgSuccess.style.display != 'none') {
-    msgSuccess.style.display = 'none';
-  }
-
-}
 
 const setDefaultPrice = () => {
   updatePrice();
@@ -124,6 +82,12 @@ const setDefaultPrice = () => {
 
 const setDefaultCapacity = () => {
   updateCapacity();
+};
+
+const onResetButtonClick = () => {
+  resetButton.addEventListener('click', () => {
+    setDefaultFormValues();
+  });
 };
 
 const initTimeChange = () => {
@@ -143,9 +107,6 @@ const initForm = () => {
   initCapacityChange();
   onFormSumbit();
   onResetButtonClick();
-  onErrorButtonClick
-  onDocumentClick();
-  onDocumentKeyDown();
 };
 
-export { initForm, updateAddress };
+export { initForm, updateAddress, setDefaultFormValues };
