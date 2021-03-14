@@ -1,5 +1,4 @@
-import { initForm } from './form.js';
-import { setPageActivity } from './page.js';
+import { initForm, setPageActivity } from './form.js';
 import { loadItems } from './fetch.js';
 import { initMap } from './map.js';
 

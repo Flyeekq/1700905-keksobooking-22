@@ -1,22 +1,3 @@
-const CHEKIN = ['12:00', '13:00', '14:00'];
-
-const CHEKOUT = ['12:00', '13:00', '14:00'];
-
-const FEATURES = [
-  'wifi',
-  'dishwasher',
-  'parking',
-  'washer',
-  'elevator',
-  'conditioner',
-];
-
-const PHOTOS = [
-  'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
-  'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
-  'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
-];
-
 const TYPE = {
   PALACE: 'palace',
   FLAT: 'flat',
@@ -40,14 +21,6 @@ const PRICES_RESOURCE = {
   [TYPE.BUNGALOW]: 0,
 };
 
-const DESCRIPTIONS = [
-  'просторная светлое помещение',
-  'не очень просторное и темное помещение',
-  'компактно и светло',
-  'большая площадь территории',
-  'просторный двор',
-];
-
 const GUESTS = {
   ANY: 'any',
   ZERO: '0',
@@ -64,15 +37,4 @@ const GUESTS_RESOURCE = {
   [GUESTS.THREE]: ['1', '2', '3'],
 };
 
-export {
-  CHEKIN,
-  CHEKOUT,
-  FEATURES,
-  PHOTOS,
-  TYPE,
-  TYPES,
-  TYPE_RESOURCE,
-  PRICES_RESOURCE,
-  GUESTS_RESOURCE,
-  DESCRIPTIONS,
-};
+export { TYPE, TYPES, TYPE_RESOURCE, PRICES_RESOURCE, GUESTS_RESOURCE };

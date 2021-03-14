@@ -106,6 +106,14 @@ const initTimeChange = () => {
   });
 };
 
+const setPageActivity = (status) => {
+  if (!status) {
+    form.classList.add('ad-form--disabled');
+  } else {
+    form.classList.remove('ad-form--disabled');
+  }
+};
+
 const initForm = () => {
   setDefaultPrice();
   setDefaultCapacity();
@@ -116,4 +124,4 @@ const initForm = () => {
   onResetButtonClick();
 };
 
-export { initForm, updateAddress, setDefaultFormValues };
+export { initForm, updateAddress, setDefaultFormValues, setPageActivity };
