@@ -8,6 +8,8 @@ import { uploadItems, loadItems } from './fetch.js';
 import { showSuccess, showError } from './notification.js';
 import { initMap } from './map.js';
 
+const ITEMS_QUANTITY = 10;
+
 const type = document.querySelector('#type');
 const price = document.querySelector('#price');
 const timeIn = document.querySelector('#timein');
@@ -114,7 +116,7 @@ const getAds = () =>
     (items) => {
       ads = items;
 
-      initMap(items);
+      initMap(items.slice(0, ITEMS_QUANTITY));
     },
     (err) => {
       const messageЕemplateElement = messageTemplate.cloneNode(true);
