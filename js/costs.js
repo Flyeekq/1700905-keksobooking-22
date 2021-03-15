@@ -43,15 +43,25 @@ const MAIN_COORDS = {
 };
 
 const TYPE_PRICES = {
+  ANY: 'any',
   LOW: 'low',
   MIDDLE: 'middle',
   HIGH: 'high',
 };
 
 const PRICES_RANGE = {
+  [TYPE_PRICES.ANY]: { MIN: 1000000, MAX: 0 },
   [TYPE_PRICES.LOW]: { MIN: 0, MAX: 10000 },
   [TYPE_PRICES.MIDDLE]: { MIN: 10000, MAX: 50000 },
   [TYPE_PRICES.HIGH]: { MIN: 50000, MAX: 1000000 },
+};
+
+const ROOMS = {
+  [TYPE.ANY]: ['any'],
+  [TYPE.ZERO]: ['0'],
+  [GUESTS.ONE]: ['1'],
+  [GUESTS.TWO]: ['1', '2'],
+  [GUESTS.THREE]: ['1', '2', '3'],
 };
 
 export {

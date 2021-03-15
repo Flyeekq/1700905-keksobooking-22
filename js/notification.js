@@ -49,7 +49,8 @@ const removeDocumentEvents = () => {
 
 const hideNotification = () => {
   if (msgSuc !== null) {
-    main.removeChild(msgSuc);
+    msgSuc.remove();
+
     msgSuc = null;
 
     setDefaultFormValues();
@@ -57,7 +58,7 @@ const hideNotification = () => {
     removeDocumentEvents();
   }
   if (msgErr !== null) {
-    main.removeChild(msgErr);
+    msgSuc.remove();
     msgErr = null;
 
     removeDocumentEvents();

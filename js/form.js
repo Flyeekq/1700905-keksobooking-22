@@ -3,10 +3,10 @@ import {
   GUESTS_RESOURCE,
   MAIN_COORDS,
   PRICES_RANGE,
-} from './data.js';
+} from './costs.js';
 import { uploadItems, loadItems } from './fetch.js';
 import { showSuccess, showError } from './notification.js';
-import { initMap } from './map.js';
+import { initMap, updateMap } from './map.js';
 
 const ITEMS_QUANTITY = 10;
 
@@ -131,48 +131,99 @@ const getAds = () =>
 
 const onMapFiltersChange = () => {
   mapFilters.addEventListener('change', (evt) => {
-    let filters = Object.fromEntries(new FormData(evt.currentTarget));
+    const filters = Object.fromEntries(new FormData(evt.currentTarget));
 
-    filterAds(ads, filters);
+    const filtredAds = getFiltredAds(ads, filters, ITEMS_QUANTITY);
+    updateMap(filtredAds);
   });
 };
 
-const filterAds = (ads, filters) => {
-  let newAds = ads.filter((ad) => {
-    if (
-      filters['housing-type'] !== 'any' &&
-      ad.offer.type != filters['housing-type']
-    ) {
-      return false;
-    }
-
-    if (
-      filters['housing-rooms'] !== 'any' &&
-      ad.offer.rooms != filters['housing-rooms']
-    ) {
-      return false;
-    }
-
-    if (
-      filters['housing-guests'] !== 'any' &&
-      ad.offer.guests != filters['housing-guests']
-    ) {
-      return false;
-    }
-
-    if (
-      filters['housing-price'] !== 'any' &&
-      (ad.offer.price < PRICES_RANGE[filters['housing-price']].MIN ||
-        ad.offer.price > PRICES_RANGE[filters['housing-price']].MAX)
-    ) {
-      return false;
-    }
-
-    return true;
-  });
-
-  initMap(newAds, true);
+const checkValue = (adValue, filterValue) => {
+  // return filterValue === `any` || adValue === filterValue;
+  return filterValue === `any` || adValue == filterValue;
 };
+
+const checkValueRange = (adValueMIN, adValueMAX, filterValue) => {
+  return filterValue === `any` || adValueMIN === adValueMAX;
+};
+
+const filterAd = (ad, filters) => {
+  const {
+    offer: { type, rooms, guests, price },
+  } = ad;
+
+  const housingType = filters['housing-type'];
+  const housingRooms = filters['housing-rooms'];
+  const housingGuests = filters['housing-guests'];
+  const housingPrice = filters['housing-price'];
+
+  return (
+    checkValue(type, housingType) &&
+    checkValue(rooms, housingRooms) &&
+    checkValue(guests, housingGuests) &&
+    checkValueRange(
+      price < PRICES_RANGE[housingPrice].MIN,
+      price > PRICES_RANGE[housingPrice].MAX,
+      housingPrice
+    )
+  );
+};
+
+const getFiltredAds = (ads, filters, count) => {
+  const filtred = [];
+
+  for (let i = 0; i < count; i++) {
+    const ad = ads[i];
+    const isAvaliable = filterAd(ad, filters);
+
+    if (isAvaliable) {
+      filtred.push(ad);
+    }
+
+    if (filtred.length === count) {
+      break;
+    }
+  }
+
+  return filtred;
+};
+
+// const filterAds = (ads, filters) => {
+//   let newAds = ads.filter((ad) => {
+//     if (
+//       filters['housing-type'] !== 'any' &&
+//       ad.offer.type != filters['housing-type']
+//     ) {
+//       return false;
+//     }
+
+//     if (
+//       filters['housing-rooms'] !== 'any' &&
+//       ad.offer.rooms != filters['housing-rooms']
+//     ) {
+//       return false;
+//     }
+
+//     if (
+//       filters['housing-guests'] !== 'any' &&
+//       ad.offer.guests != filters['housing-guests']
+//     ) {
+//       return false;
+//     }
+
+//     if (
+//       filters['housing-price'] !== 'any' &&
+//       (ad.offer.price < PRICES_RANGE[filters['housing-price']].MIN ||
+//         ad.offer.price > PRICES_RANGE[filters['housing-price']].MAX)
+//     ) {
+//       return false;
+//     }
+
+//     return true;
+//   });
+
+//   updateMap(newAds);
+// };
 
 const initForm = () => {
   setDefaultPrice();

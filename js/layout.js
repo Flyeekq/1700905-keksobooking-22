@@ -1,4 +1,4 @@
-import { TYPE_RESOURCE } from './data.js';
+import { TYPE_RESOURCE } from './costs.js';
 
 const CLASS_TEXT = 'popup__feature--';
 

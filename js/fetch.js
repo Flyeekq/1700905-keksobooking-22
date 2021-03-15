@@ -26,16 +26,12 @@ const loadItems = (onSuccess, onError) => {
 };
 
 const uploadItems = (onSuccess, onError, body) => {
-  fetch('https://22.javascript.pages.academy/keksobooking', {
+  createFetch('https://22.javascript.pages.academy/keksobooking', {
     method: 'POST',
     body,
   })
-    .then((response) => {
-      if (response.status >= 400 && response.status < 600) {
-        throw new Error(`${response.status} ${response.statusText}`);
-      }
-
-      onSuccess();
+    .then((json) => {
+      onSuccess(json);
     })
     .catch((err) => {
       onError(err);

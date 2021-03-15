@@ -1,43 +1,49 @@
 import renderCard from './layout.js';
 import { updateAddress } from './form.js';
-import { MAIN_COORDS } from './data.js';
+import { MAIN_COORDS } from './costs.js';
 
+let map = null;
 let markerGroup = null;
 
-const renderMap = (ads, clearMarkers) => {
-  if (clearMarkers) {
-    markerGroup.clearLayers();
-  } else {
-    const map = createMap();
-  }
+const mainMarkerMoveendHandler = (evt) => {
+  let markerLatLng = evt.target.getLatLng();
+  const { lat, lng } = markerLatLng;
 
+  updateAddress(lat, lng);
+};
+
+const renderMainMarker = () => {
   const mainPinIcon = createIcon('../img/main-pin.svg');
 
-  let mainPinMarker = addMarker(
+  const mainPinMarker = createMarker(
     MAIN_COORDS.LAT,
     MAIN_COORDS.LNG,
-    true,
     mainPinIcon,
-    map
+    mainMarkerMoveendHandler
   );
+
+  mainPinMarker.addTo(markerGroup);
+
   const { lat, lng } = mainPinMarker._latlng;
 
   updateAddress(lat, lng);
+};
 
-  ads.forEach((card) => {
+const renderMarkers = (items) => {
+  items.forEach((item) => {
     const simplePinIcon = createIcon('../img/pin.svg');
 
-    let simplePinMarker = addMarker(
-      card.location.lat,
-      card.location.lng,
-      false,
-      simplePinIcon,
-      map
+    const simplePinMarker = createMarker(
+      item.location.lat,
+      item.location.lng,
+      simplePinIcon
     );
 
-    simplePinMarker.bindPopup(renderCard(card), {
+    simplePinMarker.bindPopup(renderCard(item), {
       keepInView: true,
     });
+
+    simplePinMarker.addTo(markerGroup);
   });
 };
 
@@ -55,33 +61,24 @@ const createMap = () => {
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>',
   }).addTo(map);
 
-  markerGroup = L.layerGroup().addTo(map);
-
   return map;
 };
 
-const addMarker = (lat, lng, onMoveendHandler, icon, map) => {
+const createMarker = (lat, lng, icon, onMoveendHandler = null) => {
   let marker = L.marker(
     {
       lat: lat,
       lng: lng,
     },
     {
-      draggable: onMoveendHandler,
+      draggable: !!onMoveendHandler,
       icon: icon,
     }
   );
 
   if (onMoveendHandler) {
-    marker.on('moveend', (evt) => {
-      let markerLatLng = evt.target.getLatLng();
-      const { lat, lng } = markerLatLng;
-
-      updateAddress(lat, lng);
-    });
+    marker.on('moveend', onMoveendHandler);
   }
-
-  marker.addTo(markerGroup);
 
   return marker;
 };
@@ -94,8 +91,22 @@ const createIcon = (iconUrl) => {
   });
 };
 
-const initMap = (ads, clearMarkers = false) => {
-  renderMap(ads, clearMarkers);
+const initMap = (ads) => {
+  map = createMap();
+  markerGroup = L.layerGroup().addTo(map);
+
+  renderMainMarker();
+  renderMarkers(ads);
 };
 
-export { initMap };
+const updateMap = (items) => {
+  if (!map || !markerGroup) {
+    return;
+  }
+
+  markerGroup.clearLayers();
+  renderMainMarker();
+  renderMarkers(items);
+};
+
+export { initMap, updateMap };
