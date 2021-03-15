@@ -114,9 +114,9 @@ const setPageActivity = (status) => {
 const getAds = () =>
   loadItems(
     (items) => {
-      ads = items;
+      ads = items.slice(0, ITEMS_QUANTITY);
 
-      initMap(items.slice(0, ITEMS_QUANTITY));
+      initMap(ads);
     },
     (err) => {
       const messageЕemplateElement = messageTemplate.cloneNode(true);
@@ -161,9 +161,9 @@ const filterAds = (ads, filters) => {
     }
 
     if (
-      (filters['housing-price'] !== 'any' &&
-        ad.offer.price < PRICES_RANGE[filters['housing-price']].MIN) ||
-      ad.offer.price > PRICES_RANGE[filters['housing-price']].MAX
+      filters['housing-price'] !== 'any' &&
+      (ad.offer.price < PRICES_RANGE[filters['housing-price']].MIN ||
+        ad.offer.price > PRICES_RANGE[filters['housing-price']].MAX)
     ) {
       return false;
     }
