@@ -132,7 +132,7 @@ const getAds = () =>
 const onMapFiltersChange = () => {
   mapFilters.addEventListener('change', (evt) => {
     let filters = Object.fromEntries(new FormData(evt.currentTarget));
-    console.log(filters);
+
     filterAds(ads, filters);
   });
 };
@@ -170,8 +170,6 @@ const filterAds = (ads, filters) => {
 
     return true;
   });
-
-  console.log(newAds);
 
   initMap(newAds, true);
 };
