@@ -56,14 +56,6 @@ const PRICES_RANGE = {
   [TYPE_PRICES.HIGH]: { MIN: 50000, MAX: 1000000 },
 };
 
-const ROOMS = {
-  [TYPE.ANY]: ['any'],
-  [TYPE.ZERO]: ['0'],
-  [GUESTS.ONE]: ['1'],
-  [GUESTS.TWO]: ['1', '2'],
-  [GUESTS.THREE]: ['1', '2', '3'],
-};
-
 export {
   TYPE,
   TYPES,
