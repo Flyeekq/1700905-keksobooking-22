@@ -1,12 +1,25 @@
 import renderCard from './layout.js';
 import { updateAddress } from './form.js';
+import { MAIN_COORDS } from './data.js';
 
-const renderMap = (ads) => {
-  const map = createMap();
+let markerGroup = null;
+
+const renderMap = (ads, clearMarkers) => {
+  if (clearMarkers) {
+    markerGroup.clearLayers();
+  } else {
+    const map = createMap();
+  }
 
   const mainPinIcon = createIcon('../img/main-pin.svg');
 
-  let mainPinMarker = addMarker(35.672855, 139.817413, true, mainPinIcon, map);
+  let mainPinMarker = addMarker(
+    MAIN_COORDS.LAT,
+    MAIN_COORDS.LNG,
+    true,
+    mainPinIcon,
+    map
+  );
   const { lat, lng } = mainPinMarker._latlng;
 
   updateAddress(lat, lng);
@@ -31,18 +44,18 @@ const renderMap = (ads) => {
 const createMap = () => {
   const map = L.map('map').setView(
     {
-      lat: 35.672855,
-      lng: 139.817413,
+      lat: MAIN_COORDS.LAT,
+      lng: MAIN_COORDS.LNG,
     },
     16
   );
-
-  // map.setZIndex(99);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>',
   }).addTo(map);
+
+  markerGroup = L.layerGroup().addTo(map);
 
   return map;
 };
@@ -67,7 +80,8 @@ const addMarker = (lat, lng, onMoveendHandler, icon, map) => {
       updateAddress(lat, lng);
     });
   }
-  marker.addTo(map);
+
+  marker.addTo(markerGroup);
 
   return marker;
 };
@@ -80,8 +94,8 @@ const createIcon = (iconUrl) => {
   });
 };
 
-const initMap = (ads) => {
-  renderMap(ads);
+const initMap = (ads, clearMarkers = false) => {
+  renderMap(ads, clearMarkers);
 };
 
 export { initMap };
