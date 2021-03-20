@@ -47,6 +47,63 @@ const addValues = (element, author, article) => {
   article.querySelector('.popup__avatar').src = author.avatar;
 };
 
+// const addValues = (element, author, article) => {
+//   const {
+//     title,
+//     address,
+//     price,
+//     rooms,
+//     guests,
+//     checkin,
+//     checkout,
+//     description,
+//     photos,
+//   } = element;
+
+//   managePopupValue(article.querySelector('.popup__title'), 'innerText', title);
+//   managePopupValue(
+//     article.querySelector('.popup__text--address'),
+//     'innerText',
+//     address
+//   );
+
+//   managePopupValue(
+//     article.querySelector('.popup__description'),
+//     'innerText',
+//     description
+//   );
+
+//   article.querySelector('.popup__text--price').innerText = `${price} ₽/ночь`;
+
+//   article.querySelector(
+//     '.popup__text--capacity'
+//   ).innerText = `${rooms} комнаты для ${guests} гостей`;
+
+//   article.querySelector(
+//     '.popup__text--time'
+//   ).innerText = `Заезд после ${checkin}, выезд до ${checkout}`;
+
+//   managePopupValue(
+//     article.querySelector('.popup__photos').querySelector('.popup__photo'),
+//     'src',
+//     photos
+//   );
+
+//   managePopupValue(
+//     article.querySelector('.popup__avatar'),
+//     'src',
+//     author.avatar
+//   );
+// };
+
+// const managePopupValue = (element, parameter, value) => {
+//   if (emptyValuesArr.includes(value)) {
+//     element.remove();
+//   } else {
+//     element[parameter] = value;
+//   }
+// };
+
 const getCardTemplate = (item) => {
   const {
     offer,
