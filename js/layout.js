@@ -3,6 +3,7 @@ import { TYPE_RESOURCE } from './costs.js';
 const CLASS_TEXT = 'popup__feature--';
 
 const cardTemplate = document.querySelector('#card').content;
+const photosFragment = document.createDocumentFragment();
 
 const addFeatures = (container, features) => {
   container.textContent = '';
@@ -31,6 +32,11 @@ const addValues = (element, author, article) => {
     photos,
   } = element;
 
+  const photosForm = article.querySelector('.popup__photos');
+  const photoForm = photosForm.querySelector('.popup__photo');
+
+  const photoTemplate = photoForm.cloneNode(true);
+
   article.querySelector('.popup__title').innerText = title;
   article.querySelector('.popup__text--address').innerText = address;
   article.querySelector('.popup__text--price').innerText = `${price} ₽/ночь`;
@@ -41,9 +47,17 @@ const addValues = (element, author, article) => {
     '.popup__text--time'
   ).innerText = `Заезд после ${checkin}, выезд до ${checkout}`;
   article.querySelector('.popup__description').innerText = description;
-  article
-    .querySelector('.popup__photos')
-    .querySelector('.popup__photo').src = photos;
+
+  photoForm.remove();
+
+  photos.forEach((srcPhoto) => {
+    const newPhoto = photoTemplate.cloneNode(true);
+    newPhoto.src = srcPhoto;
+    photosFragment.appendChild(newPhoto);
+  });
+
+  photosForm.appendChild(photosFragment);
+
   article.querySelector('.popup__avatar').src = author.avatar;
 };
 
