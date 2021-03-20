@@ -162,12 +162,6 @@ const prepareValue = (stringValue) => {
 };
 
 const checkIntersection = (features, filters) => {
-  // for (let i = 0; i < features.length; i++) {
-  //   if (filters.indexOf(features[i]) == -1) return false;
-  // }
-
-  // return true;
-
   if (!filters) {
     // условие #1
     return true;
@@ -175,7 +169,6 @@ const checkIntersection = (features, filters) => {
   for (var i = 0; i < filters.length; i++) {
     for (var j = 0; j < features.length; j++) {
       if (filters[i] == features[j]) {
-        // вообще есть indexOf, но непонятно, под какие платформы это пишется, так что по старинке
         break;
       }
       if (j === features.length - 1) {
@@ -198,13 +191,10 @@ const filterAd = (ad, filters) => {
 
   const filtersArr = getFiltersArray(filters['features']);
 
-  // const filtersArr = Object.values(filters['features']);
-
   const housingType = filters['housing-type'];
   const housingRooms = prepareValue(filters['housing-rooms']);
   const housingGuests = prepareValue(filters['housing-guests']);
   const housingPrice = filters['housing-price'];
-  // const housingFeatures = filters['housing-features'];
 
   return (
     checkValue(type, housingType) &&
