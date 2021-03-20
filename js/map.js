@@ -1,6 +1,9 @@
 import renderCard from './layout.js';
 import { updateAddress } from './form.js';
 import { MAIN_COORDS } from './costs.js';
+import { debounce } from './debounce.js';
+
+const RERENDER_DELAY = 500;
 
 let map = null;
 let markerGroup = null;
@@ -45,6 +48,10 @@ const renderMarkers = (items) => {
 
     simplePinMarker.addTo(markerGroup);
   });
+};
+
+const debounceMarkerRender = (items) => {
+  debounce(renderMarkers(items), RERENDER_DELAY);
 };
 
 const createMap = () => {
@@ -106,7 +113,7 @@ const updateMap = (items) => {
 
   markerGroup.clearLayers();
   renderMainMarker();
-  renderMarkers(items);
+  debounceMarkerRender(items);
 };
 
 export { initMap, updateMap };

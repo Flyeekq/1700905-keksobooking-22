@@ -9,6 +9,7 @@ import { showSuccess, showError } from './notification.js';
 import { initMap, updateMap } from './map.js';
 
 const ITEMS_QUANTITY = 10;
+const ANY = 'any';
 
 const type = document.querySelector('#type');
 const price = document.querySelector('#price');
@@ -133,39 +134,84 @@ const onMapFiltersChange = () => {
   mapFilters.addEventListener('change', (evt) => {
     const filters = Object.fromEntries(new FormData(evt.currentTarget));
 
-    const filtredAds = getFiltredAds(ads, filters, ITEMS_QUANTITY);
+    const unflatened = unflatten(filters);
+
+    const filtredAds = getFiltredAds(ads, unflatened, ITEMS_QUANTITY);
     updateMap(filtredAds);
   });
 };
 
 const checkValue = (adValue, filterValue) => {
-  // return filterValue === `any` || adValue === filterValue;
-  return filterValue === `any` || adValue == filterValue;
+  return filterValue === ANY || adValue === filterValue;
 };
 
-const checkValueRange = (adValueMIN, adValueMAX, filterValue) => {
-  return filterValue === `any` || adValueMIN === adValueMAX;
+const checkPriceRange = (price, housingPrice) => {
+  return (
+    housingPrice === ANY ||
+    (price >= PRICES_RANGE[housingPrice].MIN &&
+      price <= PRICES_RANGE[housingPrice].MAX)
+  );
 };
+
+const prepareValue = (stringValue) => {
+  if (stringValue === ANY) {
+    return stringValue;
+  }
+
+  return parseInt(stringValue);
+};
+
+const checkIntersection = (features, filters) => {
+  // for (let i = 0; i < features.length; i++) {
+  //   if (filters.indexOf(features[i]) == -1) return false;
+  // }
+
+  // return true;
+
+  if (!filters) {
+    // условие #1
+    return true;
+  }
+  for (var i = 0; i < filters.length; i++) {
+    for (var j = 0; j < features.length; j++) {
+      if (filters[i] == features[j]) {
+        // вообще есть indexOf, но непонятно, под какие платформы это пишется, так что по старинке
+        break;
+      }
+      if (j === features.length - 1) {
+        // мы дошли до конца массива, и так и не нашли вхождение - значит, у нас есть элемент, который не входит в where, и нужно вернуть false
+        return false;
+      }
+    }
+  }
+  // ни для одного из элементов не сработал return false, а значит, все они найдены
+  return true;
+};
+
+const getFiltersArray = (filterFeatures) =>
+  filterFeatures === undefined ? undefined : Object.values(filterFeatures);
 
 const filterAd = (ad, filters) => {
   const {
-    offer: { type, rooms, guests, price },
+    offer: { type, rooms, guests, price, features },
   } = ad;
 
+  const filtersArr = getFiltersArray(filters['features']);
+
+  // const filtersArr = Object.values(filters['features']);
+
   const housingType = filters['housing-type'];
-  const housingRooms = filters['housing-rooms'];
-  const housingGuests = filters['housing-guests'];
+  const housingRooms = prepareValue(filters['housing-rooms']);
+  const housingGuests = prepareValue(filters['housing-guests']);
   const housingPrice = filters['housing-price'];
+  // const housingFeatures = filters['housing-features'];
 
   return (
     checkValue(type, housingType) &&
     checkValue(rooms, housingRooms) &&
     checkValue(guests, housingGuests) &&
-    checkValueRange(
-      price < PRICES_RANGE[housingPrice].MIN,
-      price > PRICES_RANGE[housingPrice].MAX,
-      housingPrice
-    )
+    checkPriceRange(price, housingPrice) &&
+    checkIntersection(features, filtersArr)
   );
 };
 
@@ -188,42 +234,23 @@ const getFiltredAds = (ads, filters, count) => {
   return filtred;
 };
 
-// const filterAds = (ads, filters) => {
-//   let newAds = ads.filter((ad) => {
-//     if (
-//       filters['housing-type'] !== 'any' &&
-//       ad.offer.type != filters['housing-type']
-//     ) {
-//       return false;
-//     }
-
-//     if (
-//       filters['housing-rooms'] !== 'any' &&
-//       ad.offer.rooms != filters['housing-rooms']
-//     ) {
-//       return false;
-//     }
-
-//     if (
-//       filters['housing-guests'] !== 'any' &&
-//       ad.offer.guests != filters['housing-guests']
-//     ) {
-//       return false;
-//     }
-
-//     if (
-//       filters['housing-price'] !== 'any' &&
-//       (ad.offer.price < PRICES_RANGE[filters['housing-price']].MIN ||
-//         ad.offer.price > PRICES_RANGE[filters['housing-price']].MAX)
-//     ) {
-//       return false;
-//     }
-
-//     return true;
-//   });
-
-//   updateMap(newAds);
-// };
+const unflatten = (data) => {
+  var result = {};
+  for (var i in data) {
+    var keys = i.split('.');
+    keys.reduce(function (r, e, j) {
+      return (
+        r[e] ||
+        (r[e] = isNaN(Number(keys[j + 1]))
+          ? keys.length - 1 == j
+            ? data[i]
+            : {}
+          : [])
+      );
+    }, result);
+  }
+  return result;
+};
 
 const initForm = () => {
   setDefaultPrice();
