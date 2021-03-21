@@ -11,6 +11,7 @@ import { initMap, updateMap } from './map.js';
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const ITEMS_QUANTITY = 10;
 const ANY = 'any';
+const IMG_DEFAULT = 'img/muffin-grey.svg';
 
 const fileChooserAvatar = document.querySelector(
   '.ad-form__field input[type=file]'
@@ -44,6 +45,11 @@ const updatePrice = () => {
 
 const updateAddress = (lat, lng) => {
   address.value = `${lat} ${lng}`;
+};
+
+const updateImg = () => {
+  previewAvatar.src = IMG_DEFAULT;
+  previewAdPhoto.src = IMG_DEFAULT;
 };
 
 const updateCapacity = () => {
@@ -119,6 +125,7 @@ const onFormSumbit = () => {
 const setDefaultFormValues = () => {
   form.reset();
   updateAddress(MAIN_COORDS.LAT, MAIN_COORDS.LNG);
+  updateImg();
 };
 
 const setDefaultPrice = () => {
