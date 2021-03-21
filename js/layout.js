@@ -4,18 +4,21 @@ const CLASS_TEXT = 'popup__feature--';
 
 const cardTemplate = document.querySelector('#card').content;
 const photosFragment = document.createDocumentFragment();
+const defaultValues = [0, '', undefined, null, '0:00'];
 
 const addFeatures = (container, features) => {
   container.textContent = '';
 
   features.forEach((feature) => {
-    const featureElement = document.createElement('li');
+    if (validateValue(feature)) {
+      const featureElement = document.createElement('li');
 
-    featureElement.classList.add('popup__feature');
-    featureElement.classList.add(`${CLASS_TEXT}${feature}`);
-    featureElement.innerText = feature;
+      featureElement.classList.add('popup__feature');
+      featureElement.classList.add(`${CLASS_TEXT}${feature}`);
+      featureElement.innerText = feature;
 
-    container.appendChild(featureElement);
+      container.appendChild(featureElement);
+    }
   });
 };
 
@@ -37,81 +40,80 @@ const addValues = (element, author, article) => {
 
   const photoTemplate = photoForm.cloneNode(true);
 
-  article.querySelector('.popup__title').innerText = title;
-  article.querySelector('.popup__text--address').innerText = address;
-  article.querySelector('.popup__text--price').innerText = `${price} ₽/ночь`;
-  article.querySelector(
-    '.popup__text--capacity'
-  ).innerText = `${rooms} комнаты для ${guests} гостей`;
-  article.querySelector(
-    '.popup__text--time'
-  ).innerText = `Заезд после ${checkin}, выезд до ${checkout}`;
-  article.querySelector('.popup__description').innerText = description;
+  const titleElement = article.querySelector('.popup__title');
+  if (validateValue(title)) {
+    titleElement.innerText = title;
+  } else {
+    titleElement.remove();
+  }
+
+  const addressElement = article.querySelector('.popup__text--address');
+  if (validateValue(address)) {
+    addressElement.innerText = address;
+  } else {
+    addressElement.remove();
+  }
+
+  const descriptionElement = article.querySelector('.popup__description');
+  if (validateValue(description)) {
+    descriptionElement.innerText = description;
+  } else {
+    descriptionElement.remove();
+  }
+
+  const priceElement = article.querySelector('.popup__text--price');
+  if (validateValue(price)) {
+    priceElement.innerText = `${price} ₽/ночь`;
+  } else {
+    priceElement.remove();
+  }
+
+  const capacityElement = article.querySelector('.popup__text--capacity');
+  if (validateValue(rooms, guests)) {
+    capacityElement.innerText = `${rooms} комнаты для ${guests} гостей`;
+  } else {
+    capacityElement.remove();
+  }
+
+  const time = article.querySelector('.popup__text--time');
+  if (validateValue(checkin, checkout)) {
+    time.innerText = `Заезд после ${checkin}, выезд до ${checkout}`;
+  } else {
+    time.remove();
+  }
+
+  const avatarElement = article.querySelector('.popup__avatar');
+  if (validateValue(author.avatar)) {
+    avatarElement.src = author.avatar;
+  } else {
+    avatarElement.remove();
+  }
 
   photoForm.remove();
 
   photos.forEach((srcPhoto) => {
-    const newPhoto = photoTemplate.cloneNode(true);
-    newPhoto.src = srcPhoto;
-    photosFragment.appendChild(newPhoto);
+    if (validateValue(srcPhoto)) {
+      const newPhoto = photoTemplate.cloneNode(true);
+      newPhoto.src = srcPhoto;
+      photosFragment.appendChild(newPhoto);
+    }
   });
 
-  photosForm.appendChild(photosFragment);
-
-  article.querySelector('.popup__avatar').src = author.avatar;
+  if (photosFragment.children.length) {
+    photosForm.appendChild(photosFragment);
+  }
 };
 
-// const addValues = (element, author, article) => {
-//   const {
-//     title,
-//     address,
-//     price,
-//     rooms,
-//     guests,
-//     checkin,
-//     checkout,
-//     description,
-//     photos,
-//   } = element;
+const validateValue = (...deps) => {
+  const isInvalid = deps.reduce(
+    (acc, deps) => acc && defaultValues.includes(deps),
+    true
+  );
+  return !isInvalid;
+};
 
-//   managePopupValue(article.querySelector('.popup__title'), 'innerText', title);
-//   managePopupValue(
-//     article.querySelector('.popup__text--address'),
-//     'innerText',
-//     address
-//   );
-
-//   managePopupValue(
-//     article.querySelector('.popup__description'),
-//     'innerText',
-//     description
-//   );
-
-//   article.querySelector('.popup__text--price').innerText = `${price} ₽/ночь`;
-
-//   article.querySelector(
-//     '.popup__text--capacity'
-//   ).innerText = `${rooms} комнаты для ${guests} гостей`;
-
-//   article.querySelector(
-//     '.popup__text--time'
-//   ).innerText = `Заезд после ${checkin}, выезд до ${checkout}`;
-
-//   managePopupValue(
-//     article.querySelector('.popup__photos').querySelector('.popup__photo'),
-//     'src',
-//     photos
-//   );
-
-//   managePopupValue(
-//     article.querySelector('.popup__avatar'),
-//     'src',
-//     author.avatar
-//   );
-// };
-
-// const managePopupValue = (element, parameter, value) => {
-//   if (emptyValuesArr.includes(value)) {
+// const managePopupValue = (element, parameter, deps, value) => {
+//   if (deps.reduce((acc, deps) => acc && defaultValues.includes(deps), true)) {
 //     element.remove();
 //   } else {
 //     element[parameter] = value;
