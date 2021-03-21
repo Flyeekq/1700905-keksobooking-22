@@ -8,8 +8,19 @@ import { uploadItems, loadItems } from './fetch.js';
 import { showSuccess, showError } from './notification.js';
 import { initMap, updateMap } from './map.js';
 
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const ITEMS_QUANTITY = 10;
 const ANY = 'any';
+
+const fileChooserAvatar = document.querySelector(
+  '.ad-form__field input[type=file]'
+);
+const previewAvatar = document.querySelector('.ad-form-header__preview img');
+
+const fileChooserAdPhoto = document.querySelector(
+  '.ad-form__upload input[type=file]'
+);
+const previewAdPhoto = document.querySelector('.ad-form__photo img');
 
 const type = document.querySelector('#type');
 const price = document.querySelector('#price');
@@ -51,6 +62,37 @@ const updateCapacity = () => {
     } else {
       places.disabled = true;
     }
+  }
+};
+
+const initAvatarChange = () => {
+  fileChooserAvatar.addEventListener('change', () => {
+    changeImgPreview(fileChooserAvatar, previewAvatar);
+  });
+};
+
+const initAdPhotoChange = () => {
+  fileChooserAdPhoto.addEventListener('change', () => {
+    changeImgPreview(fileChooserAdPhoto, previewAdPhoto);
+  });
+};
+
+const changeImgPreview = (fileChooser, preview) => {
+  const file = fileChooser.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => {
+    return fileName.endsWith(it);
+  });
+
+  if (matches) {
+    const reader = new FileReader();
+
+    reader.addEventListener('load', () => {
+      preview.src = reader.result;
+    });
+
+    reader.readAsDataURL(file);
   }
 };
 
@@ -245,6 +287,9 @@ const unflatten = (data) => {
 const initForm = () => {
   setDefaultPrice();
   setDefaultCapacity();
+
+  initAvatarChange();
+  initAdPhotoChange();
 
   initTypeChange();
   initTimeChange();
