@@ -8,9 +8,21 @@ import { uploadItems } from './fetch.js';
 import { showSuccess, showError } from './notification.js';
 import { updateMarkers } from './map.js';
 
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const ITEMS_QUANTITY = 10;
 const ADDRESS_PRECISION = 5;
 const ANY = 'any';
+const IMG_DEFAULT = 'img/muffin-grey.svg';
+
+const fileChooserAvatar = document.querySelector(
+  '.ad-form__field input[type=file]'
+);
+const previewAvatar = document.querySelector('.ad-form-header__preview img');
+
+const fileChooserAdPhoto = document.querySelector(
+  '.ad-form__upload input[type=file]'
+);
+const previewAdPhoto = document.querySelector('.ad-form__photo img');
 
 const type = document.querySelector('#type');
 const price = document.querySelector('#price');
@@ -34,6 +46,11 @@ const updateAddress = (lat, lng) => {
   address.value = `${lat.toFixed(ADDRESS_PRECISION)} ${lng.toFixed(ADDRESS_PRECISION)}`;
 };
 
+const updateImg = () => {
+  previewAvatar.src = IMG_DEFAULT;
+  previewAdPhoto.src = IMG_DEFAULT;
+};
+
 const updateCapacity = () => {
   let capacityChildren = capacity.children;
 
@@ -50,6 +67,37 @@ const updateCapacity = () => {
     } else {
       places.disabled = true;
     }
+  }
+};
+
+const initAvatarChange = () => {
+  fileChooserAvatar.addEventListener('change', () => {
+    changeImgPreview(fileChooserAvatar, previewAvatar);
+  });
+};
+
+const initAdPhotoChange = () => {
+  fileChooserAdPhoto.addEventListener('change', () => {
+    changeImgPreview(fileChooserAdPhoto, previewAdPhoto);
+  });
+};
+
+const changeImgPreview = (fileChooser, preview) => {
+  const file = fileChooser.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => {
+    return fileName.endsWith(it);
+  });
+
+  if (matches) {
+    const reader = new FileReader();
+
+    reader.addEventListener('load', () => {
+      preview.src = reader.result;
+    });
+
+    reader.readAsDataURL(file);
   }
 };
 
@@ -77,6 +125,7 @@ const setDefaultFormValues = () => {
   form.reset();
   mapFilters.reset();
   updateAddress(MAIN_COORDS.LAT, MAIN_COORDS.LNG);
+  updateImg();
 };
 
 const setDefaultPrice = () => {
@@ -221,6 +270,9 @@ const initForm = () => {
   setDefaultFormValues();
   setDefaultPrice();
   setDefaultCapacity();
+
+  initAvatarChange();
+  initAdPhotoChange();
 
   initTypeChange();
   initTimeChange();
