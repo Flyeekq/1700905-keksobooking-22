@@ -1,7 +1,6 @@
 import { setDefaultFormValues } from './form.js';
 
 const ESC = 'Escape';
-
 const main = document.querySelector('main');
 
 const successMessageTemplate = document.querySelector('#success').content;
