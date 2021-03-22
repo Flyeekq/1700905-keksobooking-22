@@ -4,9 +4,9 @@ import {
   MAIN_COORDS,
   PRICES_RANGE,
 } from './costs.js';
-import { uploadItems, loadItems } from './fetch.js';
+import { uploadItems } from './fetch.js';
 import { showSuccess, showError } from './notification.js';
-import { initMap, updateMap } from './map.js';
+import { updateMap } from './map.js';
 
 const ITEMS_QUANTITY = 10;
 const ANY = 'any';
@@ -20,10 +20,8 @@ const rooms = document.querySelector('#room_number');
 const address = document.querySelector('#address');
 const form = document.querySelector('.ad-form');
 const resetButton = document.querySelector('.ad-form__reset');
-let messageTemplate = document.querySelector('#fetch_error').content;
 const mapFilters = document.querySelector('.map__filters');
-
-let ads = null;
+const housingFeatures = mapFilters.querySelector('#housing-features');
 
 const updatePrice = () => {
   const minValue = PRICES_RESOURCE[`${type.value}`];
@@ -112,24 +110,6 @@ const setPageActivity = (status) => {
   }
 };
 
-const getAds = () =>
-  loadItems(
-    (items) => {
-      ads = items.slice(0, ITEMS_QUANTITY);
-
-      initMap(ads);
-    },
-    (err) => {
-      const messageЕemplateElement = messageTemplate.cloneNode(true);
-
-      messageЕemplateElement.querySelector(
-        '.fetch_error_message'
-      ).innerText = err;
-
-      document.body.prepend(messageЕemplateElement);
-    }
-  );
-
 const onMapFiltersChange = () => {
   mapFilters.addEventListener('change', (evt) => {
     const filters = Object.fromEntries(new FormData(evt.currentTarget));
@@ -161,35 +141,50 @@ const prepareValue = (stringValue) => {
   return parseInt(stringValue);
 };
 
-const checkIntersection = (features, filters) => {
-  if (!filters) {
-    // условие #1
+// const checkIntersection = (features, filters) => {
+//   if (!filters) {
+//     // условие #1
+//     return true;
+//   }
+//   for (var i = 0; i < filters.length; i++) {
+//     for (var j = 0; j < features.length; j++) {
+//       if (filters[i] == features[j]) {
+//         break;
+//       }
+//       if (j === features.length - 1) {
+//         // мы дошли до конца массива, и так и не нашли вхождение - значит, у нас есть элемент, который не входит в where, и нужно вернуть false
+//         return false;
+//       }
+//     }
+//   }
+//   // ни для одного из элементов не сработал return false, а значит, все они найдены
+//   return true;
+// };
+
+const checkMatchFeatures = (features, filters) => {
+  if (!filters.length) {
     return true;
   }
-  for (var i = 0; i < filters.length; i++) {
-    for (var j = 0; j < features.length; j++) {
-      if (filters[i] == features[j]) {
-        break;
-      }
-      if (j === features.length - 1) {
-        // мы дошли до конца массива, и так и не нашли вхождение - значит, у нас есть элемент, который не входит в where, и нужно вернуть false
-        return false;
-      }
-    }
-  }
-  // ни для одного из элементов не сработал return false, а значит, все они найдены
-  return true;
+
+  return filters.every((feature) => features.includes(feature));
 };
 
-const getFiltersArray = (filterFeatures) =>
-  filterFeatures === undefined ? undefined : Object.values(filterFeatures);
+// const getFiltersArray = (filterFeatures) =>
+//   filterFeatures === undefined ? undefined : Object.values(filterFeatures);
+
+const getArrayFeatures = () => {
+  const features = housingFeatures.querySelectorAll(
+    'input[(type = checkbox)]: checked'
+  );
+  return Array.from(features).map((feature) => feature.value);
+};
 
 const filterAd = (ad, filters) => {
   const {
     offer: { type, rooms, guests, price, features },
   } = ad;
 
-  const filtersArr = getFiltersArray(filters['features']);
+  const filtersArr = getArrayFeatures();
 
   const housingType = filters['housing-type'];
   const housingRooms = prepareValue(filters['housing-rooms']);
@@ -201,7 +196,7 @@ const filterAd = (ad, filters) => {
     checkValue(rooms, housingRooms) &&
     checkValue(guests, housingGuests) &&
     checkPriceRange(price, housingPrice) &&
-    checkIntersection(features, filtersArr)
+    checkMatchFeatures(features, filtersArr)
   );
 };
 
@@ -256,10 +251,4 @@ const initForm = () => {
   onMapFiltersChange();
 };
 
-export {
-  initForm,
-  updateAddress,
-  setDefaultFormValues,
-  setPageActivity,
-  getAds,
-};
+export { initForm, updateAddress, setDefaultFormValues, setPageActivity };

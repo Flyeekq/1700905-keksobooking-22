@@ -1,9 +1,12 @@
 import { setDefaultFormValues } from './form.js';
 
+const ESC = 'Escape';
+
 const main = document.querySelector('main');
 
 const successMessageTemplate = document.querySelector('#success').content;
 const errorMessageTemplate = document.querySelector('#error').content;
+const messageTemplate = document.querySelector('#fetch_error').content;
 
 let msgSuc = null;
 let msgErr = null;
@@ -25,13 +28,19 @@ const showError = (err) => {
   addDocumentEvents();
 };
 
+const showFetchError = (err) => {
+  const messageTemplateElement = messageTemplate.cloneNode(true);
+  messageTemplateElement.querySelector('.fetch_error_message').innerText = err;
+  document.body.prepend(messageTemplateElement);
+};
+
 const onDocumentClick = () => {
   hideNotification();
 };
 
 const onDocumentKeyDown = () => {
   document.addEventListener('keydown', (evt) => {
-    if (evt.keyCode == 27) {
+    if (evt.key === ESC) {
       hideNotification();
     }
   });
@@ -65,4 +74,4 @@ const hideNotification = () => {
   }
 };
 
-export { showSuccess, showError };
+export { showSuccess, showError, showFetchError };

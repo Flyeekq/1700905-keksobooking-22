@@ -1,7 +1,7 @@
 const debounce = (func, wait) => {
   let timeout;
 
-  return function executedFunction(...args) {
+  return (...args) => {
     const later = () => {
       clearTimeout(timeout);
       func(...args);

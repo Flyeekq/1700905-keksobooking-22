@@ -112,14 +112,6 @@ const validateValue = (...deps) => {
   return !isInvalid;
 };
 
-// const managePopupValue = (element, parameter, deps, value) => {
-//   if (deps.reduce((acc, deps) => acc && defaultValues.includes(deps), true)) {
-//     element.remove();
-//   } else {
-//     element[parameter] = value;
-//   }
-// };
-
 const getCardTemplate = (item) => {
   const {
     offer,
