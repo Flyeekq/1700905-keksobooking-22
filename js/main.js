@@ -9,10 +9,6 @@ let ads = null;
 
 setPageActivity(false);
 
-initForm();
-
-setPageActivity(true);
-
 const getAds = () =>
   loadItems(
     (items) => {

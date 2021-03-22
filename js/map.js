@@ -2,11 +2,13 @@ import renderCard from './layout.js';
 import { updateAddress } from './form.js';
 import { MAIN_COORDS } from './costs.js';
 import { debounce } from './debounce.js';
+import { initForm, setPageActivity } from './form.js';
 
 const RERENDER_DELAY = 500;
 
 let map = null;
 let markerGroup = null;
+let items = [];
 
 const mainMarkerMoveendHandler = (evt) => {
   let markerLatLng = evt.target.getLatLng();
@@ -25,7 +27,7 @@ const renderMainMarker = () => {
     mainMarkerMoveendHandler
   );
 
-  mainPinMarker.addTo(markerGroup);
+  mainPinMarker.addTo(map);
 
   const { lat, lng } = mainPinMarker._latlng;
 
@@ -55,13 +57,15 @@ const debounceMarkerRender = (items) => {
 };
 
 const createMap = () => {
-  const map = L.map('map').setView(
+  const map = L.map('map').on('load', () => {
+    initForm();
+    setPageActivity(true);
+  }).setView(
     {
       lat: MAIN_COORDS.LAT,
       lng: MAIN_COORDS.LNG,
     },
-    16
-  );
+    16);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution:
@@ -84,7 +88,7 @@ const createMarker = (lat, lng, icon, onMoveendHandler = null) => {
   );
 
   if (onMoveendHandler) {
-    marker.on('moveend', onMoveendHandler);
+    marker.on('move', onMoveendHandler);
   }
 
   return marker;
@@ -101,19 +105,21 @@ const createIcon = (iconUrl) => {
 const initMap = (ads) => {
   map = createMap();
   markerGroup = L.layerGroup().addTo(map);
+  items = ads;
 
   renderMainMarker();
-  renderMarkers(ads);
+  updateMarkers();
 };
 
-const updateMap = (items) => {
+const updateMarkers = (filter) => {
   if (!map || !markerGroup) {
     return;
   }
 
   markerGroup.clearLayers();
-  renderMainMarker();
-  debounceMarkerRender(items);
+
+  const displayItems = filter ? filter(items) : items;
+  debounceMarkerRender(displayItems);
 };
 
-export { initMap, updateMap };
+export { initMap, updateMarkers };

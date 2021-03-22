@@ -6,9 +6,10 @@ import {
 } from './costs.js';
 import { uploadItems } from './fetch.js';
 import { showSuccess, showError } from './notification.js';
-import { updateMap } from './map.js';
+import { updateMarkers } from './map.js';
 
 const ITEMS_QUANTITY = 10;
+const ADDRESS_PRECISION = 5;
 const ANY = 'any';
 
 const type = document.querySelector('#type');
@@ -30,7 +31,7 @@ const updatePrice = () => {
 };
 
 const updateAddress = (lat, lng) => {
-  address.value = `${lat} ${lng}`;
+  address.value = `${lat.toFixed(ADDRESS_PRECISION)} ${lng.toFixed(ADDRESS_PRECISION)}`;
 };
 
 const updateCapacity = () => {
@@ -74,6 +75,7 @@ const onFormSumbit = () => {
 
 const setDefaultFormValues = () => {
   form.reset();
+  mapFilters.reset();
   updateAddress(MAIN_COORDS.LAT, MAIN_COORDS.LNG);
 };
 
@@ -116,8 +118,9 @@ const onMapFiltersChange = () => {
 
     const unflatened = unflatten(filters);
 
-    const filtredAds = getFiltredAds(ads, unflatened, ITEMS_QUANTITY);
-    updateMap(filtredAds);
+    updateMarkers((items) => {
+      return getFiltredAds(items, unflatened, ITEMS_QUANTITY);
+    });
   });
 };
 
@@ -141,26 +144,6 @@ const prepareValue = (stringValue) => {
   return parseInt(stringValue);
 };
 
-// const checkIntersection = (features, filters) => {
-//   if (!filters) {
-//     // условие #1
-//     return true;
-//   }
-//   for (var i = 0; i < filters.length; i++) {
-//     for (var j = 0; j < features.length; j++) {
-//       if (filters[i] == features[j]) {
-//         break;
-//       }
-//       if (j === features.length - 1) {
-//         // мы дошли до конца массива, и так и не нашли вхождение - значит, у нас есть элемент, который не входит в where, и нужно вернуть false
-//         return false;
-//       }
-//     }
-//   }
-//   // ни для одного из элементов не сработал return false, а значит, все они найдены
-//   return true;
-// };
-
 const checkMatchFeatures = (features, filters) => {
   if (!filters.length) {
     return true;
@@ -169,12 +152,9 @@ const checkMatchFeatures = (features, filters) => {
   return filters.every((feature) => features.includes(feature));
 };
 
-// const getFiltersArray = (filterFeatures) =>
-//   filterFeatures === undefined ? undefined : Object.values(filterFeatures);
-
 const getArrayFeatures = () => {
   const features = housingFeatures.querySelectorAll(
-    'input[(type = checkbox)]: checked'
+    'input[type = checkbox]:checked'
   );
   return Array.from(features).map((feature) => feature.value);
 };
@@ -238,6 +218,7 @@ const unflatten = (data) => {
 };
 
 const initForm = () => {
+  setDefaultFormValues();
   setDefaultPrice();
   setDefaultCapacity();
 
