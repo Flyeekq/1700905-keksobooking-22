@@ -24,7 +24,7 @@ const renderMainMarker = () => {
     MAIN_COORDS.LAT,
     MAIN_COORDS.LNG,
     mainPinIcon,
-    mainMarkerMoveendHandler
+    mainMarkerMoveendHandler,
   );
 
   mainPinMarker.addTo(map);
@@ -41,7 +41,7 @@ const renderMarkers = (items) => {
     const simplePinMarker = createMarker(
       item.location.lat,
       item.location.lng,
-      simplePinIcon
+      simplePinIcon,
     );
 
     simplePinMarker.bindPopup(renderCard(item), {
@@ -57,7 +57,7 @@ const debounceMarkerRender = (items) => {
 };
 
 const createMap = () => {
-  const map = L.map('map').on('load', () => {
+  const map = window.L.map('map').on('load', () => {
     initForm();
     setPageActivity(true);
   }).setView(
@@ -67,7 +67,7 @@ const createMap = () => {
     },
     16);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>',
   }).addTo(map);
@@ -76,7 +76,7 @@ const createMap = () => {
 };
 
 const createMarker = (lat, lng, icon, onMoveendHandler = null) => {
-  let marker = L.marker(
+  let marker = window.L.marker(
     {
       lat: lat,
       lng: lng,
@@ -84,7 +84,7 @@ const createMarker = (lat, lng, icon, onMoveendHandler = null) => {
     {
       draggable: !!onMoveendHandler,
       icon: icon,
-    }
+    },
   );
 
   if (onMoveendHandler) {
@@ -95,7 +95,7 @@ const createMarker = (lat, lng, icon, onMoveendHandler = null) => {
 };
 
 const createIcon = (iconUrl) => {
-  return L.icon({
+  return window.L.icon({
     iconUrl: iconUrl,
     iconSize: [52, 52],
     iconAnchor: [26, 52],
@@ -104,7 +104,7 @@ const createIcon = (iconUrl) => {
 
 const initMap = (ads) => {
   map = createMap();
-  markerGroup = L.layerGroup().addTo(map);
+  markerGroup = window.L.layerGroup().addTo(map);
   items = ads;
 
   renderMainMarker();

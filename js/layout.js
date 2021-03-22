@@ -107,7 +107,7 @@ const addValues = (element, author, article) => {
 const validateValue = (...deps) => {
   const isInvalid = deps.reduce(
     (acc, deps) => acc && defaultValues.includes(deps),
-    true
+    true,
   );
   return !isInvalid;
 };

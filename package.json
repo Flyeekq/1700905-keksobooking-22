@@ -11,11 +11,9 @@
     "url": "https://github.com/htmlacademy-javascript/1700905-keksobooking-22/issues"
   },
   "devDependencies": {
-    "@types/lodash": "4.14.168",
     "browser-sync": "2.26.14",
     "eslint": "7.18.0",
-    "eslint-config-htmlacademy": "2.0.0",
-    "eslint-config-prettier": "8.1.0"
+    "eslint-config-htmlacademy": "2.0.0"
   },
   "license": "MIT",
   "scripts": {

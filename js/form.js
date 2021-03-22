@@ -2,7 +2,7 @@ import {
   PRICES_RESOURCE,
   GUESTS_RESOURCE,
   MAIN_COORDS,
-  PRICES_RANGE,
+  PRICES_RANGE
 } from './costs.js';
 import { uploadItems } from './fetch.js';
 import { showSuccess, showError } from './notification.js';
@@ -15,12 +15,12 @@ const ANY = 'any';
 const IMG_DEFAULT = 'img/muffin-grey.svg';
 
 const fileChooserAvatar = document.querySelector(
-  '.ad-form__field input[type=file]'
+  '.ad-form__field input[type=file]',
 );
 const previewAvatar = document.querySelector('.ad-form-header__preview img');
 
 const fileChooserAdPhoto = document.querySelector(
-  '.ad-form__upload input[type=file]'
+  '.ad-form__upload input[type=file]',
 );
 const previewAdPhoto = document.querySelector('.ad-form__photo img');
 
@@ -117,7 +117,7 @@ const onFormSumbit = () => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
-    uploadItems(showSuccess, showError, new FormData(evt.target));
+    uploadItems(showSuccess, showError, new FormData(form));
   });
 };
 
@@ -162,16 +162,21 @@ const setPageActivity = (status) => {
 };
 
 const onMapFiltersChange = () => {
-  mapFilters.addEventListener('change', (evt) => {
-    const filters = Object.fromEntries(new FormData(evt.currentTarget));
-
-    const unflatened = unflatten(filters);
-
-    updateMarkers((items) => {
-      return getFiltredAds(items, unflatened, ITEMS_QUANTITY);
-    });
+  mapFilters.addEventListener('change', () => {
+    updateMapFilters();
   });
 };
+
+const updateMapFilters = () =>{
+  const filters = Object.fromEntries(new FormData(mapFilters));
+
+  const unflatened = unflatten(filters);
+
+  updateMarkers((items) => {
+    return getFiltredAds(items, unflatened, ITEMS_QUANTITY);
+  });
+}
+
 
 const checkValue = (adValue, filterValue) => {
   return filterValue === ANY || adValue === filterValue;
@@ -203,7 +208,7 @@ const checkMatchFeatures = (features, filters) => {
 
 const getArrayFeatures = () => {
   const features = housingFeatures.querySelectorAll(
-    'input[type = checkbox]:checked'
+    'input[type = checkbox]:checked',
   );
   return Array.from(features).map((feature) => feature.value);
 };
@@ -249,9 +254,9 @@ const getFiltredAds = (ads, filters, count) => {
 };
 
 const unflatten = (data) => {
-  var result = {};
-  for (var i in data) {
-    var keys = i.split('.');
+  let result = {};
+  for (let i in data) {
+    let keys = i.split('.');
     keys.reduce(function (r, e, j) {
       return (
         r[e] ||
@@ -280,6 +285,8 @@ const initForm = () => {
 
   onFormSumbit();
   onResetButtonClick();
+
+  updateMapFilters();
 
   onMapFiltersChange();
 };
