@@ -8,7 +8,9 @@ setPageActivity(false);
 const getAds = () =>
   loadItems(
     (items) => {
+
       initMap(items);
+
     },
     (err) => {
       showFetchError(err);
