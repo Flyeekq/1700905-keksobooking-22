@@ -126,6 +126,7 @@ const setDefaultFormValues = () => {
   mapFilters.reset();
   updateAddress(MAIN_COORDS.LAT, MAIN_COORDS.LNG);
   updateImg();
+  updatePrice();
 };
 
 const setDefaultPrice = () => {

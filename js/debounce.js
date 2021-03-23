@@ -3,7 +3,6 @@ const debounce = (func, wait) => {
 
   return (...args) => {
     const later = () => {
-      clearTimeout(timeout);
       func(...args);
     };
 

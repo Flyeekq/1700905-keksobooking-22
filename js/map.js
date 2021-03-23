@@ -52,9 +52,13 @@ const renderMarkers = (items) => {
   });
 };
 
-const debounceMarkerRender = (items) => {
-  debounce(renderMarkers(items), RERENDER_DELAY);
-};
+const refreshMarkers = (filter) => {
+  markerGroup.clearLayers();
+  const displayItems = filter ? filter(items) : items;
+  renderMarkers(displayItems);
+}
+
+const debounceUpdateMarkers = debounce(refreshMarkers, RERENDER_DELAY);
 
 const createMap = () => {
   const map = window.L.map('map').on('load', () => {
@@ -116,10 +120,7 @@ const updateMarkers = (filter) => {
     return;
   }
 
-  markerGroup.clearLayers();
-
-  const displayItems = filter ? filter(items) : items;
-  debounceMarkerRender(displayItems);
+  debounceUpdateMarkers(filter);
 };
 
 export { initMap, updateMarkers };
